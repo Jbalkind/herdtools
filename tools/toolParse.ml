@@ -66,6 +66,18 @@ end = struct
         end in
         let module X = Make (X86) (X86LexParse) in
         X.zyva chan splitted
+    | SPARC ->
+        let module SPARC = SPARCBase in
+        let module SPARCLexParse = struct
+	  type instruction = SPARC.pseudo
+	  type token = SPARCParser.token
+
+          module L = SPARCLexer.Make(LexConf)
+	  let lexer = L.token
+	  let parser = SPARCParser.main
+        end in
+        let module X = Make (SPARC) (SPARCLexParse) in
+        X.zyva chan splitted
     | ARM ->
         let module ARM = ARMBase in
         let module ARMLexParse = struct
@@ -185,6 +197,18 @@ module Tops
 	      let parser = X86Parser.main
             end in
             let module X = Make (X86) (X86LexParse) in
+            X.zyva
+        | SPARC ->
+            let module SPARC = SPARCBase in
+            let module SPARCLexParse = struct
+	      type instruction = SPARC.pseudo
+	      type token = SPARCParser.token
+
+              module L = SPARCLexer.Make(LexConf)
+	      let lexer = L.token
+	      let parser = SPARCParser.main
+            end in
+            let module X = Make (SPARC) (SPARCLexParse) in
             X.zyva
         | ARM ->
             let module ARM = ARMBase in

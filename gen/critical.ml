@@ -144,6 +144,10 @@ let () =
       let module T = Top.Make(Co) in
       let module M = Build(T(PPCCompile.Make(V)(C)(PPCArch.Config))) in
       M.zyva
+  | SPARC ->
+      let module T = Top.Make(Co) in
+      let module M = Build(T(SPARCCompile.Make(V)(C))) in
+      M.zyva
   | ARM ->
       let module T = Top.Make(Co) in
       let module M = Build(T(ARMCompile.Make(V)(C))) in

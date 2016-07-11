@@ -496,6 +496,18 @@ end = struct
             let module Compile = X86Compile.Make(V)(OC) in
             let module X = Make(Cfg)(Arch')(LexParse)(Compile) in
             X.compile
+        | `SPARC ->
+            let module Arch' = SPARCArch.Make(OC)(V) in
+            let module LexParse = struct
+              type instruction = Arch'.pseudo
+              type token = SPARCParser.token
+              module Lexer = SPARCLexer.Make(LexConfig)
+              let lexer = Lexer.token
+              let parser = SPARCParser.main
+            end in
+            let module Compile = SPARCCompile.Make(V)(OC) in
+            let module X = Make(Cfg)(Arch')(LexParse)(Compile) in
+            X.compile
         | `ARM ->
             let module Arch' = ARMArch.Make(OC)(V) in
             let module LexParse = struct
@@ -555,6 +567,7 @@ end = struct
                   begin match OX.sysarch with
                   | `PPC -> PPCArch.comment
                   | `X86 -> X86Arch.comment
+                  | `SPARC -> SPARCArch.comment
                   | `ARM -> ARMArch.comment
                   | `AArch64 -> AArch64Arch.comment
                   | `MIPS -> MIPSArch.comment

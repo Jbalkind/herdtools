@@ -21,6 +21,7 @@ open ConstrGen
 %token <string> SYMB_REG
 %token <string> NAME
 %token <string> DOLLARNAME
+%token <string> PERCENTNAME
 %token <int> NUM
 
 %token TRUE FALSE
@@ -63,6 +64,7 @@ init:
 reg:
 | NAME       {  $1 }
 | DOLLARNAME {  $1 }
+| SYMB_REG { $1 }
 maybev:
 | NUM  { Concrete $1 }
 | NAME { Symbolic $1 }

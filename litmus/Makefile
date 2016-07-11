@@ -20,6 +20,7 @@ CFG=conti.cfg saumur.cfg saumur.close.cfg doko.cfg squale.cfg hpcx.cfg \
 INSERT_XXX=mbar.c barrier.c
 INSERT_X86=$(INSERT_XXX) timebase.c cache.c
 INSERT_PPC=$(INSERT_XXX) timebase32.c timebase64.c barrier_lab.c cache.c
+INSERT_SPARC=$(INSERT_XXX)
 INSERT_ARM=$(INSERT_XXX) cache.c
 INSERT_MIPS=$(INSERT_XXX)
 INSERT_AARCH64=$(INSERT_XXX) cache.c
@@ -46,6 +47,7 @@ install:
 	cp $(CFG) $(LIBDIR)
 	mkdir -p  $(LIBDIR)/_ppc && ( cd _ppc && cp $(INSERT_PPC) $(LIBDIR)/_ppc )
 	mkdir -p  $(LIBDIR)/_x86 && ( cd _x86 && cp $(INSERT_X86) $(LIBDIR)/_x86 )
+	/bin/rm -rf  $(LIBDIR)/_sparc && mkdir -p  $(LIBDIR)/_sparc && ( cd _sparc && cp $(INSERT_SPARC) $(LIBDIR)/_sparc )
 	mkdir -p  $(LIBDIR)/_arm  && ( cd _arm && cp $(INSERT_ARM) $(LIBDIR)/_arm )
 	/bin/rm -rf  $(LIBDIR)/_mips && mkdir -p  $(LIBDIR)/_mips  && ( cd _mips && cp $(INSERT_MIPS) $(LIBDIR)/_mips )
 	/bin/rm -rf  $(LIBDIR)/_aarch64 && mkdir -p  $(LIBDIR)/_aarch64  && ( cd _aarch64 && cp $(INSERT_AARCH64) $(LIBDIR)/_aarch64 )

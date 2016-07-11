@@ -144,6 +144,9 @@ let () =
   | PPC ->
       let module M = Build(PPCArch.Make(PPCArch.Config)) in
       M.zyva
+  | SPARC ->
+      let module M = Build(SPARCArch) in
+      M.zyva
   | ARM ->
       let module M = Build(ARMArch) in
       M.zyva

@@ -19,6 +19,8 @@ type op =
   | Add | Sub | Mul | Div
   | And | Or | Xor | Nor
   | ShiftLeft
+  | ShiftRightLog
+  | ShiftRightArith
   | Lt | Gt | Eq | Ne
   | Le | Ge
 
@@ -33,6 +35,8 @@ let pp_op o =
   | Xor -> "^" (* in C ?? *)
   | Nor -> "(nor)"
   | ShiftLeft -> "<<<" (* In Java ?? *)
+  | ShiftRightLog -> ">>>"
+  | ShiftRightArith -> ">>"
   | Eq -> "=="
   | Lt -> "<"
   | Gt -> ">"

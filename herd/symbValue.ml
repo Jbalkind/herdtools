@@ -192,6 +192,8 @@ let op op = match op with
 | Xor -> xor
 | Nor -> binop op (fun x1 x2 -> lnot (x1 lor x2))
 | ShiftLeft -> binop op (lsl)
+| ShiftRightLog -> binop op (lsr)
+| ShiftRightArith -> binop op (asr)
 | Lt -> lt
 | Gt -> gt
 | Eq -> eq

@@ -256,6 +256,9 @@ let () =
   | X86 ->
     let module M = Make(T(X86Compile.Make(C)))(Co) in
     M.go
+  | SPARC ->
+      let module M = Make(T(SPARCCompile.Make(C)))(Co) in
+      M.go
   | ARM ->
       let module M = Make(T(ARMCompile.Make(C)))(Co) in
       M.go

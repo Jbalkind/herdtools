@@ -169,6 +169,9 @@ let x86opt =
 let ppcopt =
   { delay = 1024; gccopts = "-fomit-frame-pointer -O2";
     word = Word.WXX; line = 128; }
+let sparcopt =
+  { delay = 1024; gccopts = "";
+    word = Word.WXX; line = 128; }
 let armopt =
   { delay = 1024; gccopts = "-O2";
     word = Word.WXX; line = 64;} (* cortexa9 -> 32, cortex-a15 -> 64 *)
@@ -182,6 +185,7 @@ let get_default arch = match arch with
 | `X86 -> x86opt
 | `PPCGen
 | `PPC -> ppcopt
+| `SPARC -> sparcopt
 | `AArch64
 | `ARM -> armopt
 | `MIPS -> mipsopt

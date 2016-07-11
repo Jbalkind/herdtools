@@ -212,6 +212,9 @@ let () =
         let module PPCConf = struct let eieio = !use_eieio end in
         let module M = Make(C)(T(PPCCompile.Make(C)(PPCConf))) in
         M.zyva
+    | SPARC ->
+        let module M = Make(C)(T(SPARCCompile.Make(C))) in
+        M.zyva
     | ARM ->
         let module M = Make(C)(T(ARMCompile.Make(C))) in
         M.zyva

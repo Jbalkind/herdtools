@@ -116,7 +116,7 @@ end = struct
 
   let have_timebase = function
   | `AArch64 -> false (* FIXME: ??? *)
-  | `ARM|`MIPS -> false
+  | `ARM|`MIPS|`SPARC -> false
   | `PPC|`X86 -> true
   | _ -> false
 
@@ -480,6 +480,7 @@ let user2_barrier_def () =
         | `PPC
         | `X86
         | `AArch64
+	| `SPARC
         | `MIPS -> sprintf "barrier%s.c" lab_ext
         | `ARM ->
             begin match Cfg.morearch with
@@ -1676,7 +1677,7 @@ let user2_barrier_def () =
               | `ARM ->
                   O.fx iloop "asm __volatile__ (\"isb\" : : : \"memory\");"
               | `AArch64 -> assert false (* FIXME: ??? *)
-              | `X86|`MIPS -> ()
+              | `X86|`MIPS|`SPARC -> ()
               | `GPU_PTX -> assert false
             in
             aux Cfg.sysarch

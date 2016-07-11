@@ -35,6 +35,7 @@ rule token = parse
     {NUM (int_of_string num) }
 | 'P' (decimal as x)
     { PROC (int_of_string x) }
+(* | '%' (alpha digit) as name { PERCENTNAME name }*)
 | '%' (name as name) { SYMB_REG name }
 | '&' { AMPER }
 | ';' { SEMI }

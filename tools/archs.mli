@@ -14,6 +14,7 @@
 type t =
   | X86
   | PPC
+  | SPARC
   | ARM
   | MIPS
   | AArch64
@@ -25,6 +26,7 @@ val lex : string -> t
 val pp : t -> string
 
 
+val sparc : t
 val arm : t
 val ppc : t
 val x86 : t

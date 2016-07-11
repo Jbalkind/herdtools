@@ -156,6 +156,27 @@ module Top (C:Config) = struct
           let module X = Make (X86S) (P) (X86M) in 
           X.run name chan env splitted
 
+      | `SPARC ->
+          let module SPARC = SPARCArch.Make(C.PC)(SymbValue) in
+          let module SPARCLexParse = struct
+	    type instruction = SPARC.pseudo
+	    type token = SPARCParser.token
+            module Lexer = SPARCLexer.Make(LexConfig)
+	    let lexer = Lexer.token
+	    let parser = SPARCParser.main
+	  end in
+          let module SPARCS = SPARCSem.Make(C)(SymbValue) in
+          let module SPARCBarrier = struct
+            type a = SPARC.barrier
+            type b = MEMBAR
+            let a_to_b a = match a with
+            | SPARC.StoreLoad -> MEMBAR
+          end in
+          let module SPARCM = SPARCMem.Make(ModelConfig)(SPARCS)(SPARCBarrier) in
+          let module P = GenParser.Make (C) (SPARC) (SPARCLexParse) in
+          let module X = Make (SPARCS) (P) (SPARCM) in
+          X.run name chan env splitted
+
       | `MIPS ->
           let module MIPS = MIPSArch.Make(C.PC)(SymbValue) in
           let module MIPSLexParse = struct

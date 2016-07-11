@@ -23,6 +23,10 @@ type op =
 
 (* Logical shift left *)
   | ShiftLeft
+(* Logical shift right *)
+  | ShiftRightLog
+(* Arithmetic shift right *)
+  | ShiftRightArith
 (* Return C-style boolean (zero is false, not zero is true) *)
   | Lt | Gt | Eq | Ne
   | Le | Ge

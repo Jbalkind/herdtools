@@ -18,6 +18,7 @@ module type S =
     type b =
       | SYNC | LWSYNC | ISYNC | EIEIO (* PPC memory model barrier *)
       | DSB | DMB | ISB               (* ARM barrier *)
+      | MEMBAR                        (* SPARC barrier *)
       | DSBST | DMBST
       | MFENCE | SFENCE | LFENCE      (* X86 *)
       | MEMBAR_CTA | MEMBAR_GL | MEMBAR_SYS (*PTX barriers*)
@@ -32,6 +33,7 @@ module FromPPC(B:PPCBarrier.S) = struct
   type b = 
       | SYNC | LWSYNC | ISYNC | EIEIO (* PPC memory model barrier *)
       | DSB | DMB | ISB               (* ARM barrier *)
+      | MEMBAR                        (* SPARC barrier *)
       | DSBST | DMBST
       | MFENCE | SFENCE | LFENCE      (* X86 *)
       | MEMBAR_CTA | MEMBAR_GL | MEMBAR_SYS (*PTX barriers*)
@@ -51,6 +53,7 @@ module FromARM(AB:ARMBarrier.S) = struct
   type b = 
       | SYNC | LWSYNC | ISYNC | EIEIO (* PPC memory model barrier *)
       | DSB | DMB | ISB               (* ARM barrier *)
+      | MEMBAR                        (* SPARC barrier *)
       | DSBST | DMBST
       | MFENCE | SFENCE | LFENCE      (* X86 *)
       | MEMBAR_CTA | MEMBAR_GL | MEMBAR_SYS (*PTX barriers*)
@@ -73,6 +76,7 @@ module FromX86(XB:X86Barrier.S) = struct
   type b = 
       | SYNC | LWSYNC | ISYNC | EIEIO (* PPC memory model barrier *)
       | DSB | DMB | ISB               (* ARM barrier *)
+      | MEMBAR                        (* SPARC barrier *)
       | DSBST | DMBST
       | MFENCE | SFENCE | LFENCE      (* X86 *)
       | MEMBAR_CTA | MEMBAR_GL | MEMBAR_SYS (*PTX barriers*)
@@ -85,6 +89,23 @@ module FromX86(XB:X86Barrier.S) = struct
   let pp_isync = "???"
 end
 
+module FromSPARC(MB:SPARCBarrier.S) = struct
+  type a = MB.a
+
+  type b =
+      | SYNC | LWSYNC | ISYNC | EIEIO (* PPC (MIPS) memory model barrier *)
+      | DSB | DMB | ISB               (* ARM barrier *)
+      | MEMBAR                        (* SPARC barrier *)
+      | DSBST | DMBST
+      | MFENCE | SFENCE | LFENCE      (* X86 *)
+      | MEMBAR_CTA | MEMBAR_GL | MEMBAR_SYS (*PTX barriers*)
+
+  let a_to_b a = match MB.a_to_b a with
+  | MB.MEMBAR    -> MEMBAR   
+
+  let pp_isync = "???"
+end
+
 
 module FromMIPS(MB:MIPSBarrier.S) = struct
   type a = MB.a
@@ -92,6 +113,7 @@ module FromMIPS(MB:MIPSBarrier.S) = struct
   type b =
       | SYNC | LWSYNC | ISYNC | EIEIO (* PPC (MIPS) memory model barrier *)
       | DSB | DMB | ISB               (* ARM barrier *)
+      | MEMBAR                        (* SPARC barrier *)
       | DSBST | DMBST
       | MFENCE | SFENCE | LFENCE      (* X86 *)
       | MEMBAR_CTA | MEMBAR_GL | MEMBAR_SYS (*PTX barriers*)
@@ -109,6 +131,7 @@ module FromCPP11(CB:CPP11Barrier.S) = struct
   type b = 
       | SYNC | LWSYNC | ISYNC | EIEIO (* PPC memory model barrier *)
       | DSB | DMB | ISB               (* ARM barrier *)
+      | MEMBAR                        (* SPARC barrier *)
       | DSBST | DMBST
       | MFENCE | SFENCE | LFENCE      (* X86 *)
       | MEMBAR_CTA | MEMBAR_GL | MEMBAR_SYS (*PTX barriers*)
@@ -125,6 +148,7 @@ module FromOpenCL(OB:OpenCLBarrier.S) = struct
   type b = 
       | SYNC | LWSYNC | ISYNC | EIEIO (* PPC memory model barrier *)
       | DSB | DMB | ISB               (* ARM barrier *)
+      | MEMBAR                        (* SPARC barrier *)
       | DSBST | DMBST
       | MFENCE | SFENCE | LFENCE      (* X86 *)
       | MEMBAR_CTA | MEMBAR_GL | MEMBAR_SYS (*PTX barriers*)
@@ -141,6 +165,7 @@ module FromGPU_PTX(GB:GPU_PTXBarrier.S) = struct
   type b = 
       | SYNC | LWSYNC | ISYNC | EIEIO (* PPC memory model barrier *)
       | DSB | DMB | ISB               (* ARM barrier *)
+      | MEMBAR                        (* SPARC barrier *)
       | DSBST | DMBST
       | MFENCE | SFENCE | LFENCE      (* X86 *)
       | MEMBAR_CTA | MEMBAR_GL | MEMBAR_SYS (*PTX barriers*)

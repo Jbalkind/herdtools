@@ -37,6 +37,14 @@ module X86 = struct
   let safe_conform = "Rfe,Fre,Wse,PodR*,PodWW,MFencedWR"
 end
 
+module SPARC = struct
+  module X = SPARCArch
+  module A = AutoArch.Make(X)
+  let testing = "Rfe,Pod**,Membard**,[Rfi,MembardR*],[Rfi,PodR*]"
+  let safe = "Fre,Wse"
+  let safe_conform = "Rfe,Fre,Wse,PodR*,PodWW,MembardWR"
+end
+
 module MIPS = struct
   module X = MIPSArch
   module A = AutoArch.Make(X)
@@ -78,10 +86,11 @@ end
 let get_arch a =
   let open Archs in
   match a with
-  | X86 -> (module X86 : ArchConf)
-  | PPC -> (module PPC : ArchConf)
-  | ARM -> (module ARM : ArchConf)
-  | MIPS -> (module MIPS : ArchConf)
+  | X86   -> (module X86 : ArchConf)
+  | PPC   -> (module PPC : ArchConf)
+  | SPARC -> (module SPARC : ArchConf)
+  | ARM   -> (module ARM : ArchConf)
+  | MIPS  -> (module MIPS : ArchConf)
   | AArch64|C|CPP -> Warn.fatal "architecture %s not implemented" (Archs.pp a)
 
 open AutoOpt 

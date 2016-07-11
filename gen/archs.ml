@@ -17,17 +17,19 @@
 type t =
   | X86
   | PPC
+  | SPARC
   | ARM
   | MIPS
   | AArch64
   | C
   | CPP
 
-let tags = ["X86";"PPC";"ARM";"MIPS";"C";"AArch64"]
+let tags = ["X86";"PPC";"SPARC";"ARM";"MIPS";"C";"AArch64"]
 
 let parse s = match s with
 | "X86" -> Some X86
 | "PPC" -> Some PPC
+| "SPARC" -> Some SPARC
 | "ARM" -> Some ARM
 | "MIPS" -> Some MIPS
 | "C"   -> Some C
@@ -43,6 +45,7 @@ let lex s = match parse s with
 let pp a = match a with
 | X86 -> "X86"
 | PPC -> "PPC"
+| SPARC -> "SPARC"
 | ARM -> "ARM"
 | MIPS -> "MIPS"
 | AArch64 -> "AArch64"
@@ -52,6 +55,7 @@ let pp a = match a with
 let arm = ARM
 let ppc = PPC
 let x86 = X86
+let sparc = SPARC
 let mips = MIPS
 let aarch64 = AArch64
 
