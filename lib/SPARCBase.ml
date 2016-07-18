@@ -311,8 +311,10 @@ type instruction =
   | BCOND of bcond * condreg * lbl
   | BRCOND of brcond * reg * lbl
 (* Load and Store *)
-  | LDX of reg * kr * reg
-  | STX of reg * reg * kr
+  | LD of reg * kr * reg
+  | ST of reg * reg * kr
+(*  | LDX of reg * kr * reg (* Removing LDX/STX awaiting parameterised sizing *)
+  | STX of reg * reg * kr *)
 (* Compare - This is actually a synthetic instruction?!
   | CMP of reg * kr *)
 (* Operations *)
@@ -385,7 +387,17 @@ let pp_instruction m =
 	(pp_reg reg)
         (pp_label lbl)
 (* Load and Store *)
-  | LDX (r1,kr,r2) ->
+  | LD (r1,kr,r2) ->
+      sprintf "ld [%s + %s], %s"
+        (pp_reg r1)
+        (pp_kr kr)
+        (pp_reg r2)
+  | ST (r1,r2,kr) ->
+      sprintf "st %s, [%s + %s]"
+        (pp_reg r1)
+        (pp_reg r2)
+        (pp_kr kr)
+(*  | LDX (r1,kr,r2) ->
       sprintf "ldx [%s + %s], %s"
         (pp_reg r1)
         (pp_kr kr)
@@ -394,7 +406,7 @@ let pp_instruction m =
       sprintf "stx %s, [%s + %s]"
         (pp_reg r1)
         (pp_reg r2)
-        (pp_kr kr)
+        (pp_kr kr) *)
 (* Compare 
   | CMP (r,kr) ->
       sprintf "cmp %s, %s"
@@ -448,10 +460,14 @@ let fold_regs (f_regs,f_sregs) =
     -> c
   | BRCOND (_,r,_)
     -> fold_reg r c
-  | LDX (r1,kr,r2)
+  | LD (r1,kr,r2)
+    -> fold_reg r1 (fold_kr kr (fold_reg r2 c))
+  | ST (r1,r2,kr)
+    -> fold_reg r1 (fold_reg r2 (fold_kr kr c))
+(*  | LDX (r1,kr,r2)
     -> fold_reg r1 (fold_kr kr (fold_reg r2 c))
   | STX (r1,r2,kr)
-    -> fold_reg r1 (fold_reg r2 (fold_kr kr c))
+    -> fold_reg r1 (fold_reg r2 (fold_kr kr c)) *)
 (*  | CMP (r,kr)
     -> fold_reg r (fold_kr kr c) *)
   | OP3 (_,_,r1,kr,r2)
@@ -473,10 +489,14 @@ let map_regs f_reg f_symb =
     -> ins
   | BRCOND (rcond,r,lbl)
     -> BRCOND (rcond,map_reg r,lbl)
-  | LDX (r1,kr,r2)
+  | LD (r1,kr,r2)
+    -> LD (map_reg r1,map_kr kr,map_reg r2)
+  | ST (r1,r2,kr)
+    -> ST (map_reg r1,map_reg r2,map_kr kr)
+(*  | LDX (r1,kr,r2)
     -> LDX (map_reg r1,map_kr kr,map_reg r2)
   | STX (r1,r2,kr)
-    -> STX (map_reg r1,map_reg r2,map_kr kr)
+    -> STX (map_reg r1,map_reg r2,map_kr kr)*)
 (*  | CMP (r,kr)
     -> CMP (map_reg r,map_kr kr) *)
   | OP3 (c,op,r1,kr,r2)
@@ -496,7 +516,7 @@ let get_next = function
     -> [Label.Next; Label.To lbl;]
   | BRCOND (_,_,lbl)
     -> [Label.Next; Label.To lbl;]
-  | LDX _ | STX _ | (*CMP _ |*) OP3 _ | MEMBAR _
+  | LD _ | ST _ | (*| LDX _ | STX _ | CMP _ |*) OP3 _ | MEMBAR _
     -> [Label.Next;]
 
 include Pseudo.Make
@@ -505,7 +525,7 @@ include Pseudo.Make
       type reg_arg = reg
 
       let get_naccesses = function
-	| LDX _ | STX _
+	| LD _ | ST _ (*| LDX _ | STX _ *)
 	  -> 1
 	| BCOND _ | BRCOND _
 (*	| CMP _ *)

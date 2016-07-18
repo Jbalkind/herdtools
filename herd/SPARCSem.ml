@@ -217,7 +217,26 @@ module Make (C:Sem.Config)(V:Value.S)
                    v V.zero >>=
             fun v -> commit ii >>=
             fun () -> B.bccT v lbl
-        | SPARC.LDX (r1,SPARC.RV r2,r3) ->
+        | SPARC.LD (r1,SPARC.RV r2,r3) ->
+            read_reg r1 ii >>| read_reg r2 ii >>=
+            fun (v1,v2) -> M.add v1 v2 >>=
+            fun ea      -> read_mem ea ii >>=
+            fun v       -> write_reg r3 v ii >>! B.Next
+        | SPARC.LD (r1,SPARC.K k,r2) ->
+            read_reg r1 ii >>=
+            fun a  -> M.add a (V.intToV k) >>=
+            fun ea -> read_mem ea ii >>=
+            fun v  -> write_reg r2 v ii >>! B.Next
+        | SPARC.ST (r1,r2,SPARC.RV r3) ->
+            read_reg r2 ii >>| read_reg r3 ii >>=
+            fun (v2,v3) -> M.add v2 v3 >>=
+            fun ea      -> read_reg r1 ii >>=
+            fun v1      -> write_mem ea v1 ii >>! B.Next
+        | SPARC.ST (r1,r2,SPARC.K k) ->
+            read_reg r1 ii >>| read_reg r2 ii >>=
+            fun (v1,v2) -> M.add v2 (V.intToV k) >>=
+            fun ea     -> write_mem ea v1 ii >>! B.Next
+(*        | SPARC.LDX (r1,SPARC.RV r2,r3) ->
             read_reg r1 ii >>| read_reg r2 ii >>=
             fun (v1,v2) -> M.add v1 v2 >>=
             fun ea      -> read_mem ea ii >>=
@@ -235,7 +254,7 @@ module Make (C:Sem.Config)(V:Value.S)
         | SPARC.STX (r1,r2,SPARC.K k) ->
             read_reg r1 ii >>| read_reg r2 ii >>=
             fun (v1,v2) -> M.add v2 (V.intToV k) >>=
-            fun ea     -> write_mem ea v1 ii >>! B.Next
+            fun ea     -> write_mem ea v1 ii >>! B.Next *)
         | SPARC.MEMBAR mbtype ->
             create_barrier mbtype ii >>! B.Next
         end

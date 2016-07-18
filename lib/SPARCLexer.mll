@@ -43,8 +43,10 @@ let check_name = function
   | "brgz"  -> BRGZ
   | "brgez" -> BRGEZ
 (* Load and Store *)
-  | "ldx"   -> LDX
-  | "stx"   -> STX
+  | "ld"   -> LD
+  | "st"   -> ST
+(*  | "ldx"   -> LDX
+  | "stx"   -> STX *)
 (* Operations *)
   | "addc"  -> ADDC 
   | "add"   -> ADD 

@@ -25,7 +25,8 @@ open SPARCBase
 %token SEMI COMMA PIPE COLON LPAR RPAR LBRK RBRK PLUS
 
 /* Instruction tokens */
-%token LDX STX MEMBAR
+%token LD ST MEMBAR
+/*%token LDX STX*/
 %token ADD ADDC XOR XNOR
 %token SUB SUBC OR ORN
 %token SLLX SRAX SRLX
@@ -108,14 +109,22 @@ instr:
 | BRGZ  reg COMMA NAME { BRCOND (RGZ ,$2,$4) }
 | BRGEZ reg COMMA NAME { BRCOND (RGEZ,$2,$4) }
 /* Memory */
-| LDX LBRK reg PLUS kr RBRK COMMA reg
+| LD LBRK reg PLUS kr RBRK COMMA reg
+  { LD ($3,$5,$8) }
+| LD LBRK reg RBRK COMMA reg
+  { LD ($3,(K 0),$6) }
+| ST reg COMMA LBRK reg PLUS kr RBRK
+  { ST ($2,$5,$7) }
+| ST reg COMMA LBRK reg RBRK
+  { ST ($2,$5,(K 0)) }
+/*| LDX LBRK reg PLUS kr RBRK COMMA reg
   { LDX ($3,$5,$8) }
 | LDX LBRK reg RBRK COMMA reg
   { LDX ($3,(K 0),$6) }
 | STX reg COMMA LBRK reg PLUS kr RBRK
   { STX ($2,$5,$7) }
 | STX reg COMMA LBRK reg RBRK
-  { STX ($2,$5,(K 0)) }
+  { STX ($2,$5,(K 0)) }*/
 /* Operations */
 | ADD   reg COMMA kr COMMA reg
   { OP3 (None,ADD,$2,$4,$6) }

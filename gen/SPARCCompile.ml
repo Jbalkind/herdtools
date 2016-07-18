@@ -57,7 +57,7 @@ module Make(Cfg:CompileCommon.Config) : XXXCompile.S =
     let emit_load st p init x =
       let rA,st = next_reg st in
       let rB,init,st = next_init st p init x in
-      rA,init,pseudo [LDX (rB,K 0,rA)],st
+      rA,init,pseudo [LD (rB,K 0,rA)],st
 
     let emit_load_not_zero st p init x =
       let rA,st = next_reg st in
@@ -66,7 +66,7 @@ module Make(Cfg:CompileCommon.Config) : XXXCompile.S =
       rA,init,
       Label (lab,Nop)::
       pseudo
-        (LDX (rB,K 0,rA)::branch_neq rA (K 0) lab []),
+        (LD (rB,K 0,rA)::branch_neq rA (K 0) lab []),
       st
 
     let emit_load_one st p init x =
@@ -75,7 +75,7 @@ module Make(Cfg:CompileCommon.Config) : XXXCompile.S =
       let lab = Label.next_label "L" in
       rA,init,
       Label (lab,Nop)::
-      pseudo (LDX (rB,K 0,rA)::branch_neq rA (K 1) lab []),
+      pseudo (LD (rB,K 0,rA)::branch_neq rA (K 1) lab []),
       st
 
     let emit_load_not st p init x bne =
@@ -89,7 +89,7 @@ module Make(Cfg:CompileCommon.Config) : XXXCompile.S =
       (* 200 X about 5 ins looks for a typical memory delay *)
       Label (lab,Nop)::
       pseudo
-        (LDX (rB,K 0,rA)::
+        (LD (rB,K 0,rA)::
          bne rA out
            (OP3 (None,SUB,rC,K 1,rC)::branch_neq rC (K 0) lab []))@
       [Label (out,Nop)],
@@ -106,7 +106,7 @@ module Make(Cfg:CompileCommon.Config) : XXXCompile.S =
     let emit_load_idx st p init x idx =
       let rA,st = next_reg st in
       let rB,init,st = next_init st p init x in
-      rA,init,pseudo [LDX (rB,idx,rA)],st
+      rA,init,pseudo [LD (rB,idx,rA)],st
 
 (**********)
 (* Stores *)
@@ -114,11 +114,11 @@ module Make(Cfg:CompileCommon.Config) : XXXCompile.S =
 
     let emit_store_reg st p init x rA =
       let rB,init,st = next_init st p init x in
-      init,[Instruction (STX (rA,rB,K 0))],st
+      init,[Instruction (ST (rA,rB,K 0))],st
 
     let emit_store_idx_reg st p init x idx rA =
       let rB,init,st = next_init st p init x in
-      let cs = [STX (rA,rB,idx);] in
+      let cs = [ST (rA,rB,idx);] in
       init,pseudo cs,st
 
     let emit_store st p init x v =
