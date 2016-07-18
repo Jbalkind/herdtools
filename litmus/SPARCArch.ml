@@ -37,6 +37,7 @@ module Make(O:Arch.Config)(V:Constant.S) = struct
         let arch = `SPARC
         let forbidden_regs = []
         let pp_reg = pp_reg
+        let fmt_pp_reg = fmt_pp_reg
         let reg_compare = reg_compare
         let reg_to_string = reg_to_string
         let internal_init r = 

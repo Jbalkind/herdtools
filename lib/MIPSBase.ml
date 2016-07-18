@@ -127,6 +127,8 @@ let r0 = IReg R0
 
 let pp_reg = do_pp_reg Ascii
 
+let fmt_pp_reg = pp_reg
+
 let reg_compare = Pervasives.compare
 
 (************)

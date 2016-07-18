@@ -144,7 +144,7 @@ module Make
 
       let pp_loc tr_out loc =  match loc with
       | A.Location_reg (proc,reg) ->
-          tr_out (sprintf "%i:%s" proc (A.pp_reg reg))
+          tr_out (sprintf "%i:%s" proc (A.fmt_pp_reg reg))
       | A.Location_global s -> sprintf "%s" s
 
 

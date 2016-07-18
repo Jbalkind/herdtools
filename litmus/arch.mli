@@ -42,6 +42,7 @@ module type Base = sig
   val arch : Archs.t
 
   val find_in_state : location -> state -> V.v
+  val fmt_pp_reg : reg -> string
   val pp_reg : reg -> string
 end
 

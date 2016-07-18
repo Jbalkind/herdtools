@@ -28,6 +28,8 @@ type reg = string
 
 let pp_reg r = r
 
+let fmt_pp_reg = pp_reg
+
 let reg_compare = String.compare
 
 let parse_reg s = Some s

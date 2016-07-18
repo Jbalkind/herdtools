@@ -12,4 +12,4 @@
 
 (** Modes for pretty-printing *)
 
-type t = Ascii | Latex | Dot | DotFig
+type t = Ascii | Fmt | Latex | Dot | DotFig

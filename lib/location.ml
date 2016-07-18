@@ -13,6 +13,7 @@
 module type I = sig
   type arch_reg
   val pp_reg : arch_reg -> string
+  val fmt_pp_reg : arch_reg -> string
   val reg_compare : arch_reg -> arch_reg -> int
 
   type arch_global
@@ -58,11 +59,11 @@ with type loc_reg = A.arch_reg and type loc_global = A.arch_global =
       | Location_reg _ -> None
 
     let pp_location l = match l with
-    | Location_reg (proc,r) -> string_of_int proc ^ ":" ^ A.pp_reg r
+    | Location_reg (proc,r) -> string_of_int proc ^ ":" ^ A.fmt_pp_reg r
     | Location_global a -> A.pp_global a
 
     let pp_rval l = match l with
-    | Location_reg (proc,r) -> string_of_int proc ^ ":" ^ A.pp_reg r
+    | Location_reg (proc,r) -> string_of_int proc ^ ":" ^ A.fmt_pp_reg r
     | Location_global a -> Printf.sprintf "*%s" (A.pp_global a)
 
 (*

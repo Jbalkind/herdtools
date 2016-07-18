@@ -24,6 +24,7 @@ module Make (O:sig val hexa : bool end)(A:ArchBase.S) = struct
       (struct
         type arch_reg = A.reg
         let pp_reg = A.pp_reg
+        let fmt_pp_reg = A.pp_reg
         let reg_compare = A.reg_compare
 
         type arch_global = global

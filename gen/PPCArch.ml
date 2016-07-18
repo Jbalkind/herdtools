@@ -90,6 +90,7 @@ module Make(C:Config)  =
             | Symbolic_reg _ -> true
             | _ -> false
           let pp_reg = pp_reg
+          let fmt_pp_reg = pp_reg
           let free_registers = allowed_for_symb
         end)
   end

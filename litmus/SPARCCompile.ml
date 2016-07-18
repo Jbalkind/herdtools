@@ -82,7 +82,7 @@ module Make(V:Constant.S)(C:Arch.Config) =
     let bc tr_lab bcond condreg lbl =
       { empty_ins with
         memo = sprintf "b%s ^i0,%s"
-          (A.pp_cond bcond) (A.Out.dump_label (tr_lab lbl)) ;
+          (A.pp_bcond bcond) (A.Out.dump_label (tr_lab lbl)) ;
         inputs=[condreg;];
         branch=[Next; Branch lbl] ; }
 

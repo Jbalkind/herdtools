@@ -24,6 +24,7 @@ module type S = sig
 (*  val pc : reg (* Program counter *) *)
 
   val parse_reg : string -> reg option
+  val fmt_pp_reg : reg -> string
   val pp_reg : reg -> string
   val reg_compare : reg -> reg -> int
 

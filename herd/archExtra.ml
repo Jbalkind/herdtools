@@ -18,6 +18,7 @@ module type I = sig
 
   type arch_reg
   val pp_reg : arch_reg -> string
+  val fmt_pp_reg : arch_reg -> string
   val reg_compare : arch_reg -> arch_reg -> int
 
   type arch_instruction
@@ -170,6 +171,7 @@ module Make(C:Config) (I:I) : S with module I = I
       (struct
         type arch_reg = I.arch_reg
         let pp_reg = I.pp_reg
+        let fmt_pp_reg = I.pp_reg
         let reg_compare = I.reg_compare
 
         type arch_global = I.V.v

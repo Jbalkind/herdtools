@@ -71,6 +71,7 @@ module Make (O:Arch.Config)(V:Constant.S) = struct
         let arch = `PPC
         let forbidden_regs = [Ireg GPR0]
         let pp_reg = pp_reg
+        let fmt_pp_reg = pp_reg
         let reg_compare = reg_compare
         let reg_to_string = reg_to_string
         let internal_init r =

@@ -102,6 +102,8 @@ let pp_xreg r = match r with
 
 let pp_reg = pp_xreg
 
+let fmt_pp_reg = pp_reg
+
 let pp_wreg r = match r with
 | Symbolic_reg r -> "W%" ^ r
 | Internal i -> Printf.sprintf "i%i" i

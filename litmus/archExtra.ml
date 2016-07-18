@@ -21,6 +21,7 @@ module type I = sig
   type arch_reg
   val arch : Archs.t
   val forbidden_regs : arch_reg list
+  val fmt_pp_reg : arch_reg -> string
   val pp_reg : arch_reg -> string
   val reg_compare : arch_reg -> arch_reg -> int
   val reg_to_string  : arch_reg -> string

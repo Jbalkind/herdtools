@@ -173,6 +173,7 @@ open PPMode
 
 let add_percent m s = match  m with
 | Ascii | Dot -> "%" ^ s
+| Fmt -> "%%" ^ s
 | Latex -> "\\%" ^ s
 | DotFig -> "\\\\%" ^ s
 
@@ -261,6 +262,8 @@ let r0 = Ireg G0
 
 let pp_reg = do_pp_reg Ascii
 
+let fmt_pp_reg = do_pp_reg Fmt
+
 let reg_compare = Pervasives.compare
 
 (************)
@@ -319,7 +322,7 @@ type instruction =
 
 let pp_label i = i
 
-let pp_cond = function
+let pp_bcond = function
   | A  -> "a"
   | N  -> "n"
   | E  -> "e"
@@ -373,7 +376,7 @@ let pp_instruction m =
 (* Branches *)
   | BCOND (cond,condreg,lbl) ->
       sprintf "b%s %s, %s"
-        (pp_cond cond)
+        (pp_bcond cond)
 	(pp_reg (Creg condreg))
         (pp_label lbl)
   | BRCOND (rcond,reg,lbl) ->

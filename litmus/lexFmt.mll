@@ -18,11 +18,13 @@ let tr_prec = function
   | Some s -> try int_of_string s with _ -> assert false 
 }
 
+let sparcreg = ("g" | "i" | "l" | "o") ['0'-'7']
 let digit = ['0'-'9']
 let num = '-'? digit+
 let sp = ' '*
 rule main k = parse
 | "%%" { main (Percent::k) lexbuf }
+| "%" (sparcreg as reg) { main ((Lit ("\%" ^ reg))::k) lexbuf }
 | '%'
   { 
     let pad = lexpad lexbuf in
@@ -65,5 +67,5 @@ and lexconv pad = parse
 | "" { failwith ("lexFmt: lexconv") }
 
 {
-let lex s = main [] (Lexing.from_string s)
+let lex s = try (main [] (Lexing.from_string s)) with | Failure str -> failwith (str ^ ": " ^ s)
 }

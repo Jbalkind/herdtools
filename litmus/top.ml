@@ -346,6 +346,7 @@ end = struct
         module Internal = struct
           type arch_reg = reg
           let pp_reg x = x
+          let fmt_pp_reg x = x
           let reg_compare = String.compare
 
           type arch_global = string
@@ -376,6 +377,7 @@ end = struct
               if location_compare loc loc2 = 0 then v
               else find_in_state loc rem
         let pp_reg x = x
+        let fmt_pp_reg x = x
       end
 
       module Pseudo = DumpCAst

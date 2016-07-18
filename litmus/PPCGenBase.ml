@@ -143,6 +143,8 @@ open Printf
       | Symbolic_reg r -> "%"^r
       | Internal i -> sprintf "i%i" i
 
+    let fmt_pp_reg = pp_reg
+
 
     let parse_list =
       List.map (fun (r,s) -> s,Ireg r) iregs @

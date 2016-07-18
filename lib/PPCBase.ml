@@ -152,6 +152,8 @@ let pp_reg r =
   | RES -> "RES"
   | RESADDR -> "RESADDR"
 
+let fmt_pp_reg = pp_reg
+
 let parse_list =
   List.map (fun (r,s) -> s,Ireg r) iregs @
   List.map (fun (r,s) -> s,Freg r) fregs

@@ -15,6 +15,7 @@ module type I = sig
 
   val is_symbolic : arch_reg -> bool
   val pp_reg : arch_reg -> string
+  val fmt_pp_reg : arch_reg -> string
   val free_registers : arch_reg list
 end
 

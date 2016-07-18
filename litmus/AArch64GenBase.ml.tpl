@@ -106,6 +106,8 @@ let pp_reg r =
   | Internal i -> Printf.sprintf "i%i" i
   | _ -> try List.assoc r xregs with Not_found -> assert false
 
+let fmt_pp_reg = pp_reg
+
 
 let reg_compare = Pervasives.compare
 

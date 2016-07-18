@@ -55,6 +55,8 @@ let pp_reg r =
     end
   | PC -> "pc"
 
+let fmt_pp_reg = pp_reg
+
 let reg_compare = Pervasives.compare
 
 let parse_list =
